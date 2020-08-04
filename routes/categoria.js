@@ -15,20 +15,11 @@ const router = Router();
 
 router.get('/', getCategoria);
 
+router.post('/', crearCategoria);
 
-router.post('/', [
-        check('strNombre').not().isEmpty(),
-        check('strDescripcion').not().isEmpty(),
-        validarCamposCategoria,
-    ],
-    crearCategoria
-);
+router.put('/:id', actualizarCategoria);
 
-router.put('/:id', [
-        check('strNombre').not().isEmpty(),
-        check('strDescripcion').not().isEmpty()
-    ],
-    actualizarCategoria);
+
 
 
 

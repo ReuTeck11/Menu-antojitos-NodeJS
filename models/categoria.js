@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-
+const uniqueValidator = require('mongoose-unique-validator');
 const CategoriaSchema = Schema({
 
     strNombre: {
@@ -7,7 +7,6 @@ const CategoriaSchema = Schema({
         required: [true, 'El nombre es requerido'],
         unique: true
     },
-
 
     strDescripcion: {
         type: String,
@@ -19,6 +18,8 @@ CategoriaSchema.method('toJSON', function() {
     const { __v, _id, ...object } = this.toObject();
     object._id = _id;
     return object;
-})
+});
+
+CategoriaSchema.plugin(uniqueValidator);
 
 module.exports = model('Categoria', CategoriaSchema);

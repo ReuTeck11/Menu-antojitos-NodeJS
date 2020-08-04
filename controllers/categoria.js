@@ -14,7 +14,6 @@ const getCategoria = async(req, res) => {
 
 // Creacion de una categoria
 const crearCategoria = async(req, res) => {
-    const { strNombre, strDescripcion } = req.body
 
     // Instancia desde mi modelo Categoria
     const categoria = new Categoria(req.body);
@@ -23,50 +22,48 @@ const crearCategoria = async(req, res) => {
     // Guardar cambios en la base de datos
     await categoria.save().then(res => {
         console.log(res);
-        res.json({
+        return res.status(200).json({
             ok: true,
-            categoria
+            msg: 'La categoria se registro correctamente!',
+            categoria: res
         });
-    }).catch(e => {
-        console.log(e);
-
-        res.json({
+    }).catch(err => {
+        return res.status(500).json({
             ok: true,
-            e: {
-                message: 'La categoria ya ha sido registrada'
-            }
+            msg: 'Error al registrar categoria',
+            err
         });
     });
 };
 
-
-const actualizarCategoria = async(req, res = response) => {
+const actualizarCategoria = async(req, res) => {
 
     const id = req.params.id;
-
-
     try {
+        // Actualizar campos
+        const campos = new Categoria(req.body);
+        campos._id = id
+        let error = campos.validateSync();
 
-        const categoriaDB = await Categoria.findById(id);
+        if (error) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Error de validacion',
+                error
+            });
+        }
 
-        if (!categoriaDB) {
+        const categoriaActualizada = await Categoria.findByIdAndUpdate(id, { $set: campos }, { new: true });
+
+        if (!categoriaActualizada) {
             return res.status(404).json({
                 ok: false,
                 msg: 'No existe la categoria por ese id'
             });
         }
-
-        // Actualizar campos
-        const campos = req.body;
-        delete campos.strNombre;
-        delete campos.strDescripcion;
-
-        const categoriaActualizada = await Categoria.findByIdAndUpdate(id, campos, { new: true });
-
-        res.json({
+        return res.status(200).json({
             ok: true,
             categoria: categoriaActualizada
-
         });
 
     } catch (error) {
