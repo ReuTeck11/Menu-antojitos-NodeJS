@@ -4,14 +4,23 @@ const express = require('express');
 const cors = require('cors');
 
 
+
+// Conexion a front
+const morgan = require('morgan');
+
+
 const { dbConnection } = require('./database/config');
+
 
 
 // Crear el servidor de express
 const app = express();
 
-// Configurar CORS
-app.use(cors());
+// Conexion al front
+app.use(morgan('dev'));
+
+// Configurar CORS - Conexion front
+app.use(cors({ origin: 'http://localhost:4200' }));
 
 // Lectura y parseo del body
 app.use(express.json());

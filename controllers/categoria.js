@@ -65,10 +65,9 @@ const actualizarCategoria = async(req, res) => {
             ok: true,
             categoria: categoriaActualizada
         });
-
     } catch (error) {
         console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
             ok: false,
             msg: 'Error inesperado'
         });
@@ -76,8 +75,31 @@ const actualizarCategoria = async(req, res) => {
 
 };
 
+// const borrarCategoria = async(req, res) => {
+
+//     const id = req.params.id;
+
+//     try {
+
+//         return res.status(200).json({
+//             ok: true,
+//             id
+//         });
+
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json({
+//             ok: false,
+//             msg: 'Error inesperado'
+//         });
+//     }
+// };
+
+
+
 module.exports = {
     getCategoria,
     crearCategoria,
-    actualizarCategoria
+    actualizarCategoria,
+    // borrarCategoria
 };
