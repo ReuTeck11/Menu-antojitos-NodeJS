@@ -12,6 +12,7 @@ const getCategoria = async(req, res) => {
     });
 };
 
+
 // Creacion de una categoria
 const crearCategoria = async(req, res) => {
 
